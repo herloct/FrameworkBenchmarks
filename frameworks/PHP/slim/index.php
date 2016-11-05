@@ -5,9 +5,15 @@ require_once __DIR__.'/vendor/autoload.php';
 
 $app = new Slim\App(array(
     'db' => function ($c) {
-        $pdo = new PDO('mysql:host=localhost;dbname=hello_world;charset=utf8', 'benchmarkdbuser', 'benchmarkdbpass');
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+        $pdo = new PDO(
+            'mysql:host=localhost;dbname=hello_world;charset=utf8', 
+            'benchmarkdbuser', 
+            'benchmarkdbpass',
+            [
+                PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC
+            ]
+        );
 
         return $pdo;
     },
