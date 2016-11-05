@@ -10,5 +10,5 @@ sed -i 's|File = .*/error.log|File = '"${TROOT}"'/error.log|g' deploy/config.hdf
 sed -i 's|root .*/FrameworkBenchmarks/php-slim| root '"${TROOT}"'|g' deploy/nginx.conf
 sed -i 's|/usr/local/nginx/|'"${IROOT}"'/nginx/|g' deploy/nginx.conf
 
-hhvm -m daemon --config $TROOT/deploy/config.hdf --user $(whoami)
+hhvm -m daemon --config $TROOT/deploy/config.hdf --user $(whoami) -d hhvm.php7.all=1
 nginx -c $TROOT/deploy/nginx.conf
