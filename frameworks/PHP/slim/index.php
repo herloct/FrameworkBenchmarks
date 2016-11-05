@@ -8,7 +8,7 @@ $app = new Slim\App([
         $pdo = new PDO(
             'mysql:host=localhost;dbname=hello_world;charset=utf8', 
             'benchmarkdbuser', 
-            'benchmarkdbpass',
+            'benchmarkdbpass', 
             [
                 PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC,
@@ -46,10 +46,13 @@ $app->get('/json', function ($request, $response) {
 $app->get('/db', function ($request, $response) {
     $sth = $this->db->prepare('SELECT * FROM World WHERE id = ?');
     $sth->execute([mt_rand(1, 10000)]);
-    $world = $sth->fetch();
+    $row = $sth->fetch();
+
     # Cast fields to int so they don't get wrapped with quotes
-    $world['id'] = (int) $world['id'];
-    $world['randomNumber'] = (int) $world['randomNumber'];
+    $world = [
+        'id' => (int) $row['id'],
+        'randomNumber' => (int) $row['randomNumber']
+    ];
 
     return $response
         ->withJson($world)
@@ -65,10 +68,13 @@ $app->get('/dbs', function ($request, $response) {
     $worlds = [];
     for ($i = 0; $i < $queries; ++$i) {
         $sth->execute([mt_rand(1, 10000)]);
-        $world = $sth->fetch();
+        $row = $sth->fetch();
+
         # Cast fields to int so they don't get wrapped with quotes
-        $world['id'] = (int) $world['id'];
-        $world['randomNumber'] = (int) $world['randomNumber'];
+        $world = [
+            'id' => (int) $row['id'],
+            'randomNumber' => (int) $row['randomNumber']
+        ];
         $worlds[] = $world;
     }
 
@@ -90,14 +96,16 @@ $app->get('/updates', function ($request, $response) {
         $id = mt_rand(1, 10000);
         $random_number = mt_rand(1, 10000);
         $sth->execute([$id]);
-        $world = $sth->fetch();
+        $row = $sth->fetch();
+
         # Cast fields to int so they don't get wrapped with quotes
-        $world['id'] = (int) $world['id'];
-        $world['randomNumber'] = $random_number;
+        $world = [
+            'id' => (int) $row['id'],
+            'randomNumber' => $randomNumber
+        ];
+        $worlds[] = $world;
 
         $updateSth->execute([$world['randomNumber'], $world['id']]);
-
-        $worlds[] = $world;
     }
 
     return $response
