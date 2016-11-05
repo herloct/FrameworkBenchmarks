@@ -94,7 +94,7 @@ $app->get('/updates', function ($request, $response) {
     $worlds = [];
     for ($i = 0; $i < $queries; ++$i) {
         $id = mt_rand(1, 10000);
-        $random_number = mt_rand(1, 10000);
+        $randomNumber = mt_rand(1, 10000);
         $sth->execute([$id]);
         $row = $sth->fetch();
 
