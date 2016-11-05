@@ -26,6 +26,8 @@ $app = new Slim\App([
 
 // Test 1: Plaintext
 $app->get('/plaintext', function ($request, $response) {
+    ini_set('default_charset', ''); // fixes utf-8 warning
+
     return $response
         ->write('Hello, World!')
         ->withHeader('Content-Type', 'text/plain')
